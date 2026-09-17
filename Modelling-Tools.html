@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Engineering Diagram & Artifact Learning Studio</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+  <!-- Mermaid.js for Diagram Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Inter & Fira Code Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Fira Code', 'monospace']
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0b1329; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+    .md-rendered { color: #cbd5e1; line-height: 1.6; }
+    .md-rendered h1 { font-size: 1.75rem; font-weight: 700; color: #f8fafc; margin-top: 1.25rem; margin-bottom: 0.75rem; border-bottom: 1px solid #1e293b; padding-bottom: 0.5rem; }
+    .md-rendered h2 { font-size: 1.35rem; font-weight: 600; color: #f1f5f9; margin-top: 1rem; margin-bottom: 0.5rem; }
+    .md-rendered h3 { font-size: 1.15rem; font-weight: 600; color: #e2e8f0; margin-top: 0.85rem; margin-bottom: 0.4rem; }
+    .md-rendered p { margin-bottom: 0.85rem; }
+    .md-rendered ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.85rem; }
+    .md-rendered ol { list-style-type: decimal; padding-left: 1.25rem; margin-bottom: 0.85rem; }
+    .md-rendered table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.85rem; }
+    .md-rendered th, .md-rendered td { border: 1px solid #334155; padding: 0.5rem 0.75rem; text-align: left; }
+    .md-rendered th { background-color: #0f172a; color: #f8fafc; font-weight: 600; }
+    .md-rendered code { background-color: #0f172a; color: #818cf8; padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-family: 'Fira Code', monospace; font-size: 0.85em; }
+    .md-rendered pre { background-color: #020617; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1rem; border: 1px solid #1e293b; }
+    .md-rendered blockquote { border-left: 4px solid #6366f1; padding-left: 1rem; margin-left: 0; color: #94a3b8; font-style: italic; }
+  </style>
+</head>
+<body class="h-full flex flex-col bg-slate-950 text-slate-100 font-sans antialiased overflow-hidden">
+
+  <!-- Header -->
+  <header class="h-14 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 flex items-center justify-between px-4 z-20 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="p-2 bg-indigo-600/20 text-indigo-400 rounded-lg border border-indigo-500/30">
+        <i class="fa-solid fa-graduation-cap text-lg"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-sm md:text-base text-slate-100 leading-none">Software Engineering Diagram Studio</h1>
+        <p class="text-xs text-slate-400 hidden sm:block">Interactive Mastery Hub for System Architecture & Design Artifacts</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+        <i class="fa-solid fa-layer-group"></i> 10 Complete Modules
+      </span>
+    </div>
+  </header>
+
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col overflow-y-auto shrink-0 select-none">
+      <div class="p-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Learning Modules</div>
+      <nav class="space-y-1 px-2 text-xs">
+        <button onclick="switchTab('uml-studio')" id="nav-uml-studio" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 transition">
+          <i class="fa-solid fa-cubes text-indigo-400 w-4"></i>
+          <span>1. UML Class Diagrams</span>
+        </button>
+        <button onclick="switchTab('context-dfd')" id="nav-context-dfd" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 transition">
+          <i class="fa-solid fa-circle-nodes text-emerald-400 w-4"></i>
+          <span>2. Context Diagram (Lvl 0)</span>
+        </button>
+        <button onclick="switchTab('level1-dfd')" id="nav-level1-dfd" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 transition">
+          <i class="fa-solid fa-sitemap text-teal-400 w-4"></i>
+          <span>3. Level 1 DFD Guide</span>
+        </button>
+        <button onclick="switchTab('data-dictionary')" id="nav-data-dictionary" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 transition">
+          <i class="fa-solid fa-database text-amber-400 w-4"></i>
+          <span>4. Data Dictionary</span>
+        </button>
+        <button onclick="switchTab('decision-tree')" id="nav-decision-tree" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 transition">
+          <i class="fa-solid fa-code-branch text-rose-400 w-4"></i>
+          <span>5. Decision Trees & Shapes</span>
+        </button>
+        <button onclick="switchTab('storyboard')" id="nav-storyboard" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 transition">
+          <i class="fa-solid fa-window-restore text-fuchsia-400 w-4"></i>
+          <span>6. UI Storyboards</span>
+        </button>
+        <button onclick="switchTab('structure-chart')" id="nav-structure-chart" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 transition">
+          <i class="fa-solid fa-network-wired text-cyan-400 w-4"></i>
+          <span>7. Structure Chart Studio</span>
+        </button>
+        <button onclick="switchTab('flowchart')" id="nav-flowchart" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 transition">
+          <i class="fa-solid fa-diagram-next text-yellow-400 w-4"></i>
+          <span>8. System Flowcharts</span>
+        </button>
+        <button onclick="switchTab('use-case')" id="nav-use-case" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 transition">
+          <i class="fa-solid fa-user-gear text-purple-400 w-4"></i>
+          <span>9. Use Case Diagrams</span>
+        </button>
+        <button onclick="switchTab('user-stories')" id="nav-user-stories" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/60 transition">
+          <i class="fa-solid fa-list-check text-sky-400 w-4"></i>
+          <span>10. User Stories & 3 Cs</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <main class="flex-1 bg-slate-950 overflow-y-auto p-4 md:p-6 relative">
+
+      <!-- ================= MODULE 1: UML CLASS DIAGRAMS ================= -->
+      <section id="tab-uml-studio" class="tab-content space-y-6">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-cubes text-indigo-400"></i> UML Class Diagrams Masterclass
+          </h2>
+          <p class="text-slate-400 text-xs mt-1">Learn class box anatomy, visibility modifiers, all 7 relationship arrow types with code, multiplicity rules, and sandbox practice.</p>
+        </div>
+
+        <!-- Section A: Class Box Anatomy & Visibilities -->
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
+          <h3 class="font-semibold text-sm text-slate-200 border-b border-slate-800 pb-2">A. Class Box Structure & Visibilities</h3>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <p class="text-xs text-slate-300 mb-3">A UML class box is divided into three distinct compartments: <strong>Class Name</strong>, <strong>Attributes</strong>, and <strong>Operations/Methods</strong>. Toggle visibility modifiers to see them highlighted below:</p>
+              
+              <div class="flex flex-wrap gap-2 mb-4">
+                <button onclick="toggleUmlVis('all')" class="px-3 py-1 bg-indigo-600 text-white text-xs rounded border border-indigo-500 font-medium">Show All</button>
+                <button onclick="toggleUmlVis('pub')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs rounded border border-slate-700 font-mono">+ Public</button>
+                <button onclick="toggleUmlVis('priv')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-rose-400 text-xs rounded border border-slate-700 font-mono">- Private</button>
+                <button onclick="toggleUmlVis('prot')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs rounded border border-slate-700 font-mono"># Protected</button>
+                <button onclick="toggleUmlVis('pkg')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-sky-400 text-xs rounded border border-slate-700 font-mono">~ Package</button>
+              </div>
+
+              <!-- Interactive UML Box -->
+              <div class="w-full max-w-sm bg-slate-950 border-2 border-slate-700 rounded-lg overflow-hidden shadow-xl text-xs font-mono mx-auto lg:mx-0">
+                <div class="bg-slate-800 p-2 text-center border-b border-slate-700 font-bold text-indigo-300">
+                  &laquo;entity&raquo;<br>BankAccount
+                </div>
+                <div class="p-2 border-b border-slate-800 space-y-1">
+                  <div class="uml-row-priv text-rose-300">- accountNumber: String</div>
+                  <div class="uml-row-priv text-rose-300">- balance: Double</div>
+                  <div class="uml-row-prot text-amber-300"># interestRate: Double</div>
+                  <div class="uml-row-pkg text-sky-300">~ internalCode: Int</div>
+                </div>
+                <div class="p-2 space-y-1">
+                  <div class="uml-row-pub text-emerald-300">+ deposit(amount: Double): Boolean</div>
+                  <div class="uml-row-pub text-emerald-300">+ withdraw(amount: Double): Boolean</div>
+                  <div class="uml-row-prot text-amber-300"># calculateInterest(): Double</div>
+                  <div class="uml-row-priv text-rose-300">- logTransaction(type: String): Void</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visibilities Reference Table -->
+            <div class="space-y-3">
+              <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Visibility Modifier Rules</h4>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border border-slate-800">
+                  <thead class="bg-slate-950 text-slate-400 border-b border-slate-800">
+                    <tr>
+                      <th class="p-2">Symbol</th>
+                      <th class="p-2">Access Level</th>
+                      <th class="p-2">Accessibility Scope</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800">
+                    <tr><td class="p-2 font-mono text-emerald-400 font-bold">+</td><td class="p-2 font-semibold text-slate-200">Public</td><td class="p-2 text-slate-400">Accessible from any class in any package.</td></tr>
+                    <tr><td class="p-2 font-mono text-rose-400 font-bold">-</td><td class="p-2 font-semibold text-slate-200">Private</td><td class="p-2 text-slate-400">Accessible ONLY within the declaring class.</td></tr>
+                    <tr><td class="p-2 font-mono text-amber-400 font-bold">#</td><td class="p-2 font-semibold text-slate-200">Protected</td><td class="p-2 text-slate-400">Accessible within class and derived subclasses.</td></tr>
+                    <tr><td class="p-2 font-mono text-sky-400 font-bold">~</td><td class="p-2 font-semibold text-slate-200">Package</td><td class="p-2 text-slate-400">Accessible only within same package/folder.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section B: All 7 Relationship Arrows with Code -->
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
+          <h3 class="font-semibold text-sm text-slate-200 border-b border-slate-800 pb-2">B. The 7 UML Relationship Arrows & Code Implementations</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            <!-- 1. Generalization -->
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-indigo-400">1. Generalization (Inheritance)</span>
+                <span class="font-mono text-xs text-indigo-300">───▷</span>
+              </div>
+              <p class="text-10px text-slate-400">IS-A relationship between child class and parent class.</p>
+              <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
+                <span class="text-indigo-400">// Java</span><br>
+                class Dog extends Animal {}
+              </div>
+            </div>
+
+            <!-- 2. Realization -->
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-emerald-400">2. Realization (Interface)</span>
+                <span class="font-mono text-xs text-emerald-300">- - ▷</span>
+              </div>
+              <p class="text-10px text-slate-400">Implementation of an interface contract by a class.</p>
+              <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
+                <span class="text-emerald-400">// TypeScript</span><br>
+                class CreditCard implements PaymentProcessor {}
+              </div>
+            </div>
+
+            <!-- 3. Composition -->
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-rose-400">3. Composition (Strong Ownership)</span>
+                <span class="font-mono text-xs text-rose-300">◆───</span>
+              </div>
+              <p class="text-10px text-slate-400">Part cannot exist without the Whole. Lifecycles are tied.</p>
+              <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
+                <span class="text-rose-400">// C++</span><br>
+                class Car { Engine engine; };
+              </div>
+            </div>
+
+            <!-- 4. Aggregation -->
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-amber-400">4. Aggregation (Weak Ownership)</span>
+                <span class="font-mono text-xs text-amber-300">◇───</span>
+              </div>
+              <p class="text-10px text-slate-400">HAS-A relationship. Part can exist independently of Whole.</p>
+              <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
+                <span class="text-amber-400">// Java</span><br>
+                class Department { List&lt;Teacher&gt; teachers; }
+              </div>
+            </div>
+
+            <!-- 5. Direct Association -->
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-sky-400">5. Direct Association</span>
+                <span class="font-mono text-xs text-sky-300">───&gt;</span>
+              </div>
+              <p class="text-10px text-slate-400">One-way structural connection where Class A holds Class B.</p>
+              <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
+                <span class="text-sky-400">// Java</span><br>
+                class Customer { Order activeOrder; }
+              </div>
+            </div>
+
+            <!-- 6. Simple Association -->
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-cyan-400">6. Simple Association</span>
+                <span class="font-mono text-xs text-cyan-300">────</span>
+              </div>
+              <p class="text-10px text-slate-400">Bi-directional or general link between two class concepts.</p>
+              <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
+                <span class="text-cyan-400">// Concept</span><br>
+                Student ──── Course
+              </div>
+            </div>
+
+            <!-- 7. Dependency -->
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 md:col-span-2 lg:col-span-1">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-fuchsia-400">7. Dependency</span>
+                <span class="font-mono text-xs text-fuchsia-300">- - &gt;</span>
+              </div>
+              <p class="text-10px text-slate-400">Temporary usage. Class A uses Class B as a method parameter.</p>
+              <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
+                <span class="text-fuchsia-400">// Java</span><br>
+                void export(Printer p) { p.print(); }
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Section C: Multiplicity Visualizer -->
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
+          <h3 class="font-semibold text-sm text-slate-200 border-b border-slate-800 pb-2">C. Multiplicity Rules & Scenarios</h3>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 text-xs">
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center">
+              <div class="font-bold text-indigo-400 font-mono">1</div>
+              <div class="text-slate-300 font-medium text-10px">Exactly One</div>
+              <div class="text-slate-500 text-10px mt-1">e.g. Person to SSN</div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center">
+              <div class="font-bold text-indigo-400 font-mono">0..1</div>
+              <div class="text-slate-300 font-medium text-10px">Zero or One</div>
+              <div class="text-slate-500 text-10px mt-1">e.g. Car to Sunroof</div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center">
+              <div class="font-bold text-indigo-400 font-mono">* (or 0..*)</div>
+              <div class="text-slate-300 font-medium text-10px">Zero or Many</div>
+              <div class="text-slate-500 text-10px mt-1">e.g. User to Comments</div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center">
+              <div class="font-bold text-indigo-400 font-mono">1..*</div>
+              <div class="text-slate-300 font-medium text-10px">One or Many</div>
+              <div class="text-slate-500 text-10px mt-1">e.g. Order to LineItems</div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center col-span-2 sm:col-span-1">
+              <div class="font-bold text-indigo-400 font-mono">m..n</div>
+              <div class="text-slate-300 font-medium text-10px">Specific Range</div>
+              <div class="text-slate-500 text-10px mt-1">e.g. Team (3..5 Players)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section D: Interactive UML Sandbox & Quiz -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
+            <h3 class="font-semibold text-sm text-slate-200 border-b border-slate-800 pb-2">D. Live Code ↔ UML Sandbox</h3>
+            <textarea id="uml-sandbox-code" rows="7" oninput="updateUmlSandbox()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 font-mono text-xs text-slate-200 focus:outline-none focus:border-indigo-500">classDiagram
+    Animal <|-- Dog : Inherits
+    Car *-- Engine : Contains
+    Customer "1" --> "*" Order : Places</textarea>
+            <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 flex justify-center items-center min-h-[160px]">
+              <div id="uml-sandbox-render" class="mermaid"></div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+              <h3 class="font-semibold text-sm text-slate-200">E. Arrow Recognition Quiz</h3>
+              <span id="uml-quiz-score" class="text-xs font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded">Score: 0</span>
+            </div>
+            <div id="uml-quiz-container" class="space-y-3 text-xs">
+              <p id="uml-quiz-q" class="font-medium text-slate-300"></p>
+              <div id="uml-quiz-opts" class="space-y-2"></div>
+              <div id="uml-quiz-feedback" class="min-h-[20px] font-semibold"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MODULE 2: CONTEXT DIAGRAM ================= -->
+      <section id="tab-context-dfd" class="tab-content space-y-6 hidden">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-circle-nodes text-emerald-400"></i> Context Diagram (Level 0 DFD)
+          </h2>
+          <p class="text-slate-400 text-xs mt-1">High-level view depicting system scope, external entities, and system inputs/outputs.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-slate-900 p-5 rounded-xl border border-slate-800">
+            <div class="mermaid flex justify-center bg-slate-950 p-6 rounded-lg border border-slate-800 overflow-x-auto">
+graph LR
+    Customer((Customer)) -->|1. Submit Order| System((0.0 Order System))
+    System -->|2. Order Confirmation| Customer
+    System -->|3. Process Payment| Gateway((Payment Gateway))
+    Gateway -->|4. Payment Receipt| System
+            </div>
+          </div>
+
+          <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-3 text-xs">
+            <h3 class="font-bold text-slate-200 text-sm border-b border-slate-800 pb-2">Strict Level 0 Rules</h3>
+            <ul class="space-y-2 text-slate-300">
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                <span><strong>Single Central Process:</strong> Named <code>0.0</code> representing the entire system as a black box.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-xmark text-rose-400 mt-0.5"></i>
+                <span><strong>NO Data Stores:</strong> Databases, files, or persistent stores MUST NEVER appear at Level 0. They are hidden inside the system circle.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                <span><strong>External Entities:</strong> Rectangles representing sources (originators) and sinks (receivers) of data.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MODULE 3: LEVEL 1 DFD ================= -->
+      <section id="tab-level1-dfd" class="tab-content space-y-6 hidden">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-sitemap text-teal-400"></i> Level 1 Data Flow Diagram (DFD) Guide
+          </h2>
+          <p class="text-slate-400 text-xs mt-1">Explodes Level 0's process bubble into sub-processes, data stores, and internal data movements.</p>
+        </div>
+
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 overflow-x-auto">
+          <div class="mermaid flex justify-center bg-slate-950 p-6 rounded-lg border border-slate-800 min-w-[550px]">
+graph TD
+    User((Customer)) -->|Order Details| P1(1.0 Validate Order)
+    P1 -->|Validated Order| P2(2.0 Process Payment)
+    P2 -->|Card Info| Gateway((Payment Gateway))
+    Gateway -->|Auth Code| P2
+    P2 -->|Write Record| D1[(D1 Transactions DB)]
+    P1 -->|Save Cart| D2[(D2 Pending Orders DB)]
+    P2 -->|Update Status| D2
+          </div>
+        </div>
+
+        <!-- Level 1 DFD Shape Legend -->
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
+          <div class="border-b border-slate-800 pb-2">
+            <h3 class="font-bold text-slate-200 text-sm">Level 1 DFD Shape Legend</h3>
+            <p class="text-xs text-slate-400 mt-1">Common Gane-Sarson and Yourdon-DeMarco notation for processes, stores, entities, and data flows.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-start gap-3">
+              <div class="w-12 h-9 shrink-0 rounded-full border-2 border-teal-400/70 bg-teal-500/10 flex items-center justify-center text-teal-300 font-mono text-10px">1.0</div>
+              <div>
+                <div class="font-bold text-slate-200">Circle / Soft-Oval (Process)</div>
+                <p class="text-slate-400 mt-1">Business operation or data transformation step, such as <code>1.0 Validate Order</code>. Yourdon-DeMarco uses a circle; Gane-Sarson uses a rounded rectangle.</p>
+              </div>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-start gap-3">
+              <div class="w-12 h-9 shrink-0 border border-amber-400/70 bg-amber-500/10 flex items-center justify-center text-amber-300 font-mono text-10px">D1</div>
+              <div>
+                <div class="font-bold text-slate-200">Open Rectangle / Parallel Lines (Data Store)</div>
+                <p class="text-slate-400 mt-1">Data at rest, such as databases, files, or tables. Identify stores with labels like <code>D1 Users</code> or <code>D2 Orders</code>.</p>
+              </div>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-start gap-3">
+              <div class="w-12 h-9 shrink-0 rounded-t-[50%] rounded-b-[50%] border border-emerald-400/70 bg-emerald-500/10 flex items-center justify-center text-emerald-300 font-mono text-10px">DB</div>
+              <div>
+                <div class="font-bold text-slate-200">Cylinder (Database)</div>
+                <p class="text-slate-400 mt-1">An actual relational or physical database storage system, commonly shown in architecture diagrams.</p>
+              </div>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-start gap-3">
+              <div class="w-12 h-9 shrink-0 border border-rose-400/70 bg-rose-500/10 flex items-center justify-center text-rose-300 font-mono text-10px">EXT</div>
+              <div>
+                <div class="font-bold text-slate-200">Solid Rectangle (External Entity)</div>
+                <p class="text-slate-400 mt-1">A person, department, or external system outside the system boundary, such as <code>Customer</code> or <code>Payment Gateway</code>.</p>
+              </div>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-start gap-3 md:col-span-2 lg:col-span-1">
+              <div class="w-12 shrink-0 flex items-center justify-center text-sky-300 text-lg leading-9">&#8594;</div>
+              <div>
+                <div class="font-bold text-slate-200">Arrow (Data Flow)</div>
+                <p class="text-slate-400 mt-1">Data in motion. Every arrow should carry a clear label describing the data package being transferred.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Breakdown Section Below Diagram -->
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
+          <h3 class="font-bold text-slate-200 text-sm border-b border-slate-800 pb-2">Understanding Level 1 DFD Concepts</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+              <span class="font-bold text-teal-400 flex items-center gap-2">
+                <i class="fa-solid fa-list-ol"></i> Process Numbering Rules
+              </span>
+              <p class="text-slate-300">Sub-processes are numbered sequentially (e.g. <code>1.0</code>, <code>2.0</code>, <code>3.0</code>). If a sub-process is exploded further into a Level 2 DFD, process <code>1.0</code> decomposes into <code>1.1</code>, <code>1.2</code>, <code>1.3</code>.</p>
+            </div>
+
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+              <span class="font-bold text-teal-400 flex items-center gap-2">
+                <i class="fa-solid fa-scale-balanced"></i> Level 0 Balancing Requirement
+              </span>
+              <p class="text-slate-300">All data flows entering or leaving the Level 0 system box MUST enter or leave the Level 1 DFD. Net input/output streams must be strictly preserved across levels.</p>
+            </div>
+
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+              <span class="font-bold text-teal-400 flex items-center gap-2">
+                <i class="fa-solid fa-database"></i> Data Store Conventions
+              </span>
+              <p class="text-slate-300">Data stores are identified by a 'D' prefix (e.g. <code>D1 Users</code>, <code>D2 Orders</code>). They represent data at rest (SQL database, file, cache). Processes write to or read from stores.</p>
+            </div>
+
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+              <span class="font-bold text-teal-400 flex items-center gap-2">
+                <i class="fa-solid fa-[#10b981] fa-arrow-right-arrow-left"></i> Flow Labeling & Transformations
+              </span>
+              <p class="text-slate-300">Every arrow MUST be labeled with a noun representing data (e.g., "Order Info", "Receipt"). Processes MUST perform a transformation on input data to produce new output data.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MODULE 4: DATA DICTIONARY ================= -->
+      <section id="tab-data-dictionary" class="tab-content space-y-6 hidden">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-database text-amber-400"></i> Data Dictionary
+            </h2>
+            <p class="text-slate-400 text-xs mt-1">Centralized metadata store defining attribute structures, types, lengths, keys, and validation rules.</p>
+          </div>
+          <input type="text" id="dd-filter" onkeyup="filterDdTable()" placeholder="Filter attributes..." class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 w-48">
+        </div>
+
+        <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-300">
+              <thead class="bg-slate-950 text-slate-400 uppercase text-10px border-b border-slate-800">
+                <tr>
+                  <th class="p-3">Attribute Name</th>
+                  <th class="p-3">Data Type</th>
+                  <th class="p-3">Format / Length</th>
+                  <th class="p-3">Keys / Constraints</th>
+                  <th class="p-3">Validation Rules</th>
+                  <th class="p-3">Description</th>
+                </tr>
+              </thead>
+              <tbody id="dd-table-body" class="divide-y divide-slate-800">
+                <tr class="hover:bg-slate-800/40">
+                  <td class="p-3 font-mono font-bold text-amber-400">user_id</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-800 font-mono">UUID</span></td>
+                  <td class="p-3">36 chars</td>
+                  <td class="p-3"><span class="px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-10px border border-rose-500/30">PK</span> <span class="text-slate-400">NOT NULL</span></td>
+                  <td class="p-3 font-mono text-10px">/^[0-9a-f-]{36}$/</td>
+                  <td class="p-3">Unique system identifier for registered user.</td>
+                </tr>
+                <tr class="hover:bg-slate-800/40">
+                  <td class="p-3 font-mono font-bold text-amber-400">email_address</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-800 font-mono">VARCHAR</span></td>
+                  <td class="p-3">255 chars</td>
+                  <td class="p-3"><span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-10px border border-emerald-500/30">UNIQUE</span></td>
+                  <td class="p-3 font-mono text-10px">RFC 5322 Standard</td>
+                  <td class="p-3">Primary contact email and login username.</td>
+                </tr>
+                <tr class="hover:bg-slate-800/40">
+                  <td class="p-3 font-mono font-bold text-amber-400">account_balance</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-800 font-mono">DECIMAL</span></td>
+                  <td class="p-3">(10, 2)</td>
+                  <td class="p-3 text-slate-400">DEFAULT 0.00</td>
+                  <td class="p-3 font-mono text-10px">balance &gt;= 0.00</td>
+                  <td class="p-3">Monetary wallet credit balance.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MODULE 5: DECISION TREES & SHAPE DICTIONARIES ================= -->
+      <section id="tab-decision-tree" class="tab-content space-y-6 hidden">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-code-branch text-rose-400"></i> Decision Trees & Shape Dictionaries
+          </h2>
+          <p class="text-slate-400 text-xs mt-1">Master decision tree logic and explore shape dictionaries across key system modeling diagrams.</p>
+        </div>
+
+        <!-- Shape Legend for Decision Trees -->
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-3">
+          <h3 class="font-bold text-slate-200 text-sm border-b border-slate-800 pb-2">Decision Tree Shape Dictionary</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-center gap-3">
+              <div class="w-8 h-8 bg-indigo-600/20 border border-indigo-500 flex items-center justify-center text-indigo-400 font-bold rounded">■</div>
+              <div>
+                <div class="font-bold text-slate-200">Square Node</div>
+                <div class="text-10px text-slate-400">Decision Point</div>
+              </div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-center gap-3">
+              <div class="w-8 h-8 bg-amber-600/20 border border-amber-500 flex items-center justify-center text-amber-400 font-bold rounded-full">●</div>
+              <div>
+                <div class="font-bold text-slate-200">Circle Node</div>
+                <div class="text-10px text-slate-400">Chance / Event</div>
+              </div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-center gap-3">
+              <div class="w-8 h-8 bg-emerald-600/20 border border-emerald-500 flex items-center justify-center text-emerald-400 font-bold rotate-90">▲</div>
+              <div>
+                <div class="font-bold text-slate-200">Triangle Node</div>
+                <div class="text-10px text-slate-400">End Outcome</div>
+              </div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-center gap-3">
+              <div class="w-8 h-8 bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 font-mono">──</div>
+              <div>
+                <div class="font-bold text-slate-200">Branch Line</div>
+                <div class="text-10px text-slate-400">Alternative Path</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Calculator & Visual Diagram -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-3">
+            <h3 class="font-bold text-slate-200 text-sm">Interactive Logic Tester</h3>
+            <div class="space-y-3 text-xs">
+              <div>
+                <label class="text-slate-400 block mb-1">User Membership Tier:</label>
+                <select id="dt-user-tier" onchange="runDtCalc()" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-slate-200">
+                  <option value="standard">Standard Member</option>
+                  <option value="premium">Premium Member</option>
+                  <option value="vip">VIP Member</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-slate-400 block mb-1">Purchase Total ($):</label>
+                <input type="number" id="dt-user-amount" value="150" oninput="runDtCalc()" class="w-full bg-slate-950 border border-slate-800 rounded p-2 text-slate-200">
+              </div>
+              <div id="dt-calc-output" class="p-4 rounded-lg bg-slate-950 border border-rose-500/30 text-rose-300 font-bold text-center">
+                Outcome: 10% Discount + Free Shipping
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 flex items-center justify-center">
+            <div class="mermaid">
+graph TD
+    A[Square: Check Membership] -->|VIP| B[Triangle: 20% Off]
+    A -->|Standard/Premium| C{Circle: Check Cart}
+    C -->|> $100| D[Triangle: 10% Off]
+    C -->|<= $100| E[Triangle: 0% Off]
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MODULE 6: STORYBOARDS ================= -->
+      <section id="tab-storyboard" class="tab-content space-y-6 hidden">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-window-restore text-fuchsia-400"></i> UI Storyboards
+          </h2>
+          <p class="text-slate-400 text-xs mt-1">Sequential screen wireframe sequence illustrating user interaction flow.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2 text-xs">
+              <span class="font-bold text-fuchsia-400">Screen 1: Search Catalog</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-10px text-slate-400">Step 1</span>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2 text-xs">
+              <div class="h-6 bg-slate-800 rounded flex items-center px-2 text-10px text-slate-400">[ Search Bar... ]</div>
+              <div class="grid grid-cols-2 gap-1.5">
+                <div class="h-16 bg-slate-900 border border-slate-800 rounded flex items-center justify-center text-10px text-slate-500">Product A</div>
+                <div class="h-16 bg-slate-900 border border-slate-800 rounded flex items-center justify-center text-10px text-slate-500">Product B</div>
+              </div>
+            </div>
+            <p class="text-10px text-slate-400">User browses items and clicks "Add to Cart".</p>
+          </div>
+
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2 text-xs">
+              <span class="font-bold text-fuchsia-400">Screen 2: Payment Checkout</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-10px text-slate-400">Step 2</span>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2 text-xs">
+              <div class="h-4 bg-slate-800 rounded w-3/4"></div>
+              <div class="h-4 bg-slate-800 rounded w-1/2"></div>
+              <div class="h-6 bg-fuchsia-600 rounded text-center text-white text-10px flex items-center justify-center font-bold">Pay $150.00</div>
+            </div>
+            <p class="text-10px text-slate-400">User enters payment details and confirms order.</p>
+          </div>
+
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2 text-xs">
+              <span class="font-bold text-fuchsia-400">Screen 3: Order Receipt</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-10px text-slate-400">Step 3</span>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2 text-xs text-center py-5">
+              <i class="fa-solid fa-circle-check text-emerald-400 text-3xl"></i>
+              <div class="text-10px text-slate-300 font-bold mt-1">Order #8842 Confirmed!</div>
+            </div>
+            <p class="text-10px text-slate-400">System displays confirmation and emails receipt.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MODULE 7: STRUCTURE CHART ================= -->
+      <section id="tab-structure-chart" class="tab-content space-y-6 hidden">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-network-wired text-cyan-400"></i> Structure Chart Studio
+          </h2>
+          <p class="text-slate-400 text-xs mt-1">Top-down modular breakdown illustrating program hierarchy, data couplers, control couplers, conditionals, and loops.</p>
+        </div>
+
+        <!-- Coupler & Symbol Legend -->
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-3">
+          <h3 class="font-bold text-slate-200 text-sm border-b border-slate-800 pb-2">Structure Chart Symbols & Couplers</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+              <div class="flex items-center gap-2 font-bold text-cyan-400 mb-1">
+                <span>○──&gt;</span>
+                <span>Data Coupler</span>
+              </div>
+              <p class="text-10px text-slate-400">Open circle arrow. Passes simple data values (e.g. <code>customerId</code>, <code>amount</code>) required for calculations.</p>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+              <div class="flex items-center gap-2 font-bold text-amber-400 mb-1">
+                <span>●──&gt;</span>
+                <span>Control Coupler</span>
+              </div>
+              <p class="text-10px text-slate-400">Filled circle arrow. Passes flag/boolean parameters (e.g. <code>isValid</code>, <code>EOF</code>) that alter program execution flow.</p>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+              <div class="flex items-center gap-2 font-bold text-rose-400 mb-1">
+                <span>◆ Junction</span>
+                <span>Conditional</span>
+              </div>
+              <p class="text-10px text-slate-400">Diamond at base of parent module. Indicates a module is called conditionally under an IF-statement.</p>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+              <div class="flex items-center gap-2 font-bold text-emerald-400 mb-1">
+                <span>⟳ Curved Arrow</span>
+                <span>Loop / Iteration</span>
+              </div>
+              <p class="text-10px text-slate-400">Curved line across call branches. Indicates repetitive calls to child modules inside a loop.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 flex justify-center overflow-x-auto">
+          <div class="mermaid min-w-[500px]">
+graph TD
+    Root[Executive Module: Process Sales] --> Sub1[Get Valid Order]
+    Root --> Sub2[Calculate Order Total]
+    Root --> Sub3[Print Invoice]
+    Sub2 --> Child1[Apply Tax Rate]
+    Sub2 --> Child2[Apply Promo Discount]
+          </div>
+        </div>
+
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-3">
+          <div class="border-b border-slate-800 pb-2">
+            <h3 class="font-bold text-slate-200 text-sm">Visual Structure Chart Example</h3>
+            <p class="text-xs text-slate-400 mt-1">A detailed example showing data and control couplers, conditional branches, and loop repetition.</p>
+          </div>
+          <div class="bg-white rounded-lg border border-slate-700 p-3 overflow-x-auto">
+            <img src="email.jpeg" alt="Structure chart example for an email system" class="block w-full min-w-[640px] h-auto mx-auto">
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MODULE 8: SYSTEM FLOWCHART ================= -->
+      <section id="tab-flowchart" class="tab-content space-y-6 hidden">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-diagram-next text-yellow-400"></i> System Flowcharts & Shape Dictionary
+          </h2>
+          <p class="text-slate-400 text-xs mt-1">Physical system view detailing hardware media, manual inputs, processing steps, and physical documents.</p>
+        </div>
+
+        <!-- Complete Flowchart Shape Dictionary -->
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-3">
+          <h3 class="font-bold text-slate-200 text-sm border-b border-slate-800 pb-2">System Flowchart Shape Dictionary</h3>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center space-y-1">
+              <div class="font-bold text-yellow-400">([ Pill Shape ])</div>
+              <div class="font-semibold text-slate-200">Terminal</div>
+              <div class="text-10px text-slate-500">Start / Stop</div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center space-y-1">
+              <div class="font-bold text-yellow-400">[ Rectangle ]</div>
+              <div class="font-semibold text-slate-200">Process</div>
+              <div class="text-10px text-slate-500">Execution Step</div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center space-y-1">
+              <div class="font-bold text-yellow-400">{ Diamond }</div>
+              <div class="font-semibold text-slate-200">Decision</div>
+              <div class="text-10px text-slate-500">Conditional Split</div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center space-y-1">
+              <div class="font-bold text-yellow-400">[/ Parallelogram /]</div>
+              <div class="font-semibold text-slate-200">Input / Output</div>
+              <div class="text-10px text-slate-500">Keyboard / Display</div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center space-y-1">
+              <div class="font-bold text-yellow-400">[( Cylinder )]</div>
+              <div class="font-semibold text-slate-200">Disk Storage</div>
+              <div class="text-10px text-slate-500">SQL / File DB</div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-center space-y-1">
+              <div class="font-bold text-yellow-400">Wave Bottom</div>
+              <div class="font-semibold text-slate-200">Document</div>
+              <div class="text-10px text-slate-500">Printed Paper</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 flex justify-center">
+          <div class="mermaid">
+graph TD
+    Start([Start: User Login]) --> Input[/Enter Credentials/]
+    Input --> Check{Valid Password?}
+    Check -- Yes --> Query[(Disk: User DB)]
+    Check -- No --> Error[/Display Error/]
+    Query --> Success([Proceed to Dashboard])
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MODULE 9: USE CASE DIAGRAM ================= -->
+      <section id="tab-use-case" class="tab-content space-y-6 hidden">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-user-gear text-purple-400"></i> Use Case Diagrams
+          </h2>
+          <p class="text-slate-400 text-xs mt-1">Defines system boundaries, actor goals, and conditional relationship stereotypes.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 flex justify-center items-center">
+            <div class="mermaid">
+graph LR
+    Customer((Customer)) --> UC1(Checkout Order)
+    Customer --> UC2(View History)
+    UC1 -.->|include| UC3(Validate Card)
+    UC1 -.->|extend| UC4(Apply Coupon)
+            </div>
+          </div>
+
+          <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4 text-xs">
+            <h3 class="font-bold text-slate-200 text-sm border-b border-slate-800 pb-2">Stereotype Rules: Include vs. Extend</h3>
+            
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
+              <span class="font-bold text-purple-400">&lt;&lt;include&gt;&gt; (Mandatory Sub-step)</span>
+              <p class="text-slate-300">Target use case is ALWAYS executed when base use case runs. Arrow points FROM base TO sub-step (e.g., Checkout ALWAYS includes Validate Card).</p>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
+              <span class="font-bold text-fuchsia-400">&lt;&lt;extend&gt;&gt; (Optional Condition)</span>
+              <p class="text-slate-300">Target use case ONLY runs under specific optional conditions. Arrow points FROM optional extension TO base use case (e.g., Apply Coupon extends Checkout).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MODULE 10: USER STORIES & 3 Cs ================= -->
+      <section id="tab-user-stories" class="tab-content space-y-6 hidden">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800">
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-sky-400"></i> User Stories & The 3 Cs Framework
+          </h2>
+          <p class="text-slate-400 text-xs mt-1">Master Agile requirement specification, card structures, conversations, and acceptance criteria.</p>
+        </div>
+
+        <!-- The 3 Cs Framework -->
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-3">
+          <h3 class="font-bold text-slate-200 text-sm border-b border-slate-800 pb-2">The 3 Cs Framework</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-1">
+              <span class="font-bold text-sky-400 block text-sm">1. Card</span>
+              <p class="text-slate-300">Written invitation to a conversation formatted as:<br><code>As a [role], I want [feature], So that [benefit].</code></p>
+            </div>
+
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-1">
+              <span class="font-bold text-sky-400 block text-sm">2. Conversation</span>
+              <p class="text-slate-300">Collaborative discussion between developers, product owners, and QA to flesh out requirements and edge cases.</p>
+            </div>
+
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-1">
+              <span class="font-bold text-sky-400 block text-sm">3. Confirmation</span>
+              <p class="text-slate-300">Acceptance criteria specifying verification rules formatted as <code>Given / When / Then</code>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Practical Example Card -->
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
+          <h3 class="font-bold text-slate-200 text-sm border-b border-slate-800 pb-2">User Story & Acceptance Criteria Example</h3>
+          
+          <div class="bg-slate-950 p-4 rounded-lg border border-sky-500/30 space-y-3 text-xs">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-sky-400 font-mono">US-204: 1-Click Express Checkout</span>
+              <span class="px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 text-10px">Priority: High</span>
+            </div>
+            
+            <div class="bg-slate-900 p-3 rounded border border-slate-800 text-slate-200 font-medium">
+              "As a <strong>Registered Buyer</strong>, I want to <strong>save my default credit card</strong>, So that <strong>I can complete purchases faster without re-entering card details</strong>."
+            </div>
+
+            <div class="space-y-2 pt-2 border-t border-slate-800">
+              <span class="font-bold text-slate-300 uppercase text-10px tracking-wider">Acceptance Criteria (Confirmation)</span>
+              
+              <div class="bg-slate-900 p-2.5 rounded font-mono text-10px text-slate-300 space-y-1">
+                <div class="text-emerald-400 font-bold">Scenario 1: Valid Card Saved</div>
+                <div><strong>GIVEN</strong> user is logged in with a saved card</div>
+                <div><strong>WHEN</strong> user clicks "Express Checkout"</div>
+                <div><strong>THEN</strong> order is processed immediately without prompting card details.</div>
+              </div>
+
+              <div class="bg-slate-900 p-2.5 rounded font-mono text-10px text-slate-300 space-y-1">
+                <div class="text-rose-400 font-bold">Scenario 2: Card Expired</div>
+                <div><strong>GIVEN</strong> user's saved card expiry date has passed</div>
+                <div><strong>WHEN</strong> user clicks "Express Checkout"</div>
+                <div><strong>THEN</strong> system prompts error "Card expired, please update billing info."</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- JavaScript App Logic -->
+  <script>
+    // Initialize Mermaid Configuration
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      securityLevel: 'loose',
+      themeVariables: {
+        darkMode: true,
+        background: '#020617',
+        primaryColor: '#6366f1',
+        primaryTextColor: '#f8fafc',
+        lineColor: '#818cf8'
+      }
+    });
+
+    // Tab Switcher Logic
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(el => {
+        el.classList.remove('bg-slate-800', 'text-white', 'font-semibold');
+        el.classList.add('text-slate-300');
+      });
+
+      const activeTab = document.getElementById(`tab-${tabId}`);
+      const activeNav = document.getElementById(`nav-${tabId}`);
+
+      if (activeTab) activeTab.classList.remove('hidden');
+      if (activeNav) {
+        activeNav.classList.add('bg-slate-800', 'text-white', 'font-semibold');
+        activeNav.classList.remove('text-slate-300');
+      }
+
+      // Re-trigger mermaid rendering for tab
+      setTimeout(() => {
+        mermaid.run({
+          querySelector: `#tab-${tabId} .mermaid`
+        }).catch(err => console.log('Mermaid render info:', err));
+      }, 50);
+    }
+
+    // UML Box Visibilities Toggle
+    function toggleUmlVis(type) {
+      const rows = {
+        pub: document.querySelectorAll('.uml-row-pub'),
+        priv: document.querySelectorAll('.uml-row-priv'),
+        prot: document.querySelectorAll('.uml-row-prot'),
+        pkg: document.querySelectorAll('.uml-row-pkg')
+      };
+
+      if (type === 'all') {
+        Object.values(rows).forEach(list => list.forEach(r => r.classList.remove('hidden')));
+      } else {
+        Object.keys(rows).forEach(key => {
+          rows[key].forEach(r => {
+            if (key === type) r.classList.remove('hidden');
+            else r.classList.add('hidden');
+          });
+        });
+      }
+    }
+
+    // Live UML Sandbox Update
+    function updateUmlSandbox() {
+      const input = document.getElementById('uml-sandbox-code').value;
+      const target = document.getElementById('uml-sandbox-render');
+      target.innerHTML = input;
+      mermaid.run({ querySelector: '#uml-sandbox-render' });
+    }
+
+    // Quiz Questions Data & Engine
+    const umlQuizData = [
+      {
+        q: "Which arrow represents 'Composition' (strong ownership)?",
+        opts: ["Solid line + Filled Diamond", "Dashed line + Open Arrow", "Solid line + Hollow Diamond", "Dashed line + Hollow Arrow"],
+        ans: 0,
+        exp: "Composition uses a SOLID line with a FILLED diamond on the owner class."
+      },
+      {
+        q: "What does '- - ▷' (Dashed line with hollow triangle) represent?",
+        opts: ["Generalization", "Realization (Interface)", "Dependency", "Aggregation"],
+        ans: 1,
+        exp: "Realization represents implementing an interface using a dashed line with a hollow arrow."
+      }
+    ];
+
+    let umlQuizIndex = 0;
+    let umlScore = 0;
+
+    function renderUmlQuiz() {
+      const item = umlQuizData[umlQuizIndex];
+      document.getElementById('uml-quiz-q').innerText = `Q${umlQuizIndex + 1}: ${item.q}`;
+      const optsContainer = document.getElementById('uml-quiz-opts');
+      optsContainer.innerHTML = '';
+
+      item.opts.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full p-2 bg-slate-950 hover:bg-slate-800 text-left rounded border border-slate-800 text-slate-200 transition";
+        btn.innerText = opt;
+        btn.onclick = () => answerUmlQuiz(idx);
+        optsContainer.appendChild(btn);
+      });
+    }
+
+    function answerUmlQuiz(selected) {
+      const item = umlQuizData[umlQuizIndex];
+      const feedback = document.getElementById('uml-quiz-feedback');
+      if (selected === item.ans) {
+        umlScore++;
+        feedback.className = "text-emerald-400 font-semibold";
+        feedback.innerText = "✓ Correct! " + item.exp;
+      } else {
+        feedback.className = "text-rose-400 font-semibold";
+        feedback.innerText = "✗ Incorrect. " + item.exp;
+      }
+      document.getElementById('uml-quiz-score').innerText = `Score: ${umlScore}`;
+    }
+
+    // Decision Tree Calculation
+    function runDtCalc() {
+      const tier = document.getElementById('dt-user-tier').value;
+      const amount = parseFloat(document.getElementById('dt-user-amount').value) || 0;
+      let result = "Outcome: 0% Discount";
+
+      if (tier === 'vip') {
+        result = "Outcome: 20% Off + Free Express Shipping";
+      } else if (amount > 100) {
+        result = "Outcome: 10% Off + Free Shipping";
+      }
+
+      document.getElementById('dt-calc-output').innerText = result;
+    }
+
+    // Data Dictionary Table Search
+    function filterDdTable() {
+      const term = document.getElementById('dd-filter').value.toLowerCase();
+      const rows = document.querySelectorAll('#dd-table-body tr');
+      rows.forEach(r => {
+        r.style.display = r.innerText.toLowerCase().includes(term) ? '' : 'none';
+      });
+    }
+
+    // On Load Initialization
+    window.onload = function() {
+      switchTab('uml-studio');
+      updateUmlSandbox();
+      renderUmlQuiz();
+    };
+  </script>
+</body>
+</html>
