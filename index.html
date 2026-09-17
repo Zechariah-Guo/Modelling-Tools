@@ -215,21 +215,29 @@
               </div>
               <p class="text-10px text-slate-400">IS-A relationship between child class and parent class.</p>
               <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
-                <span class="text-indigo-400">// Java</span><br>
-                class Dog extends Animal {}
+                <span class="text-indigo-400"># Python</span><br>
+                class Animal:<br>
+                &nbsp;&nbsp;pass<br><br>
+                class Dog(Animal):<br>
+                &nbsp;&nbsp;pass
               </div>
             </div>
 
             <!-- 2. Realization -->
             <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
               <div class="flex justify-between items-center">
-                <span class="font-bold text-xs text-emerald-400">2. Realization (Interface)</span>
+                <span class="font-bold text-xs text-emerald-400">2. Realization (Protocol)</span>
                 <span class="font-mono text-xs text-emerald-300">- - ▷</span>
               </div>
-              <p class="text-10px text-slate-400">Implementation of an interface contract by a class.</p>
+              <p class="text-10px text-slate-400">Implementation of a contract or interface-like behaviour by a class.</p>
               <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
-                <span class="text-emerald-400">// TypeScript</span><br>
-                class CreditCard implements PaymentProcessor {}
+                <span class="text-emerald-400"># Python</span><br>
+                from typing import Protocol<br><br>
+                class PaymentProcessor(Protocol):<br>
+                &nbsp;&nbsp;def pay(self, amount: float): ...<br><br>
+                class CreditCard(PaymentProcessor):<br>
+                &nbsp;&nbsp;def pay(self, amount: float):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;print(f"Paid ${amount}")
               </div>
             </div>
 
@@ -241,8 +249,12 @@
               </div>
               <p class="text-10px text-slate-400">Part cannot exist without the Whole. Lifecycles are tied.</p>
               <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
-                <span class="text-rose-400">// C++</span><br>
-                class Car { Engine engine; };
+                <span class="text-rose-400"># Python</span><br>
+                class Engine:<br>
+                &nbsp;&nbsp;pass<br><br>
+                class Car:<br>
+                &nbsp;&nbsp;def __init__(self):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;self.engine = Engine()
               </div>
             </div>
 
@@ -254,8 +266,12 @@
               </div>
               <p class="text-10px text-slate-400">HAS-A relationship. Part can exist independently of Whole.</p>
               <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
-                <span class="text-amber-400">// Java</span><br>
-                class Department { List&lt;Teacher&gt; teachers; }
+                <span class="text-amber-400"># Python</span><br>
+                class Teacher:<br>
+                &nbsp;&nbsp;pass<br><br>
+                class Department:<br>
+                &nbsp;&nbsp;def __init__(self):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;self.teachers = []
               </div>
             </div>
 
@@ -267,8 +283,12 @@
               </div>
               <p class="text-10px text-slate-400">One-way structural connection where Class A holds Class B.</p>
               <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
-                <span class="text-sky-400">// Java</span><br>
-                class Customer { Order activeOrder; }
+                <span class="text-sky-400"># Python</span><br>
+                class Order:<br>
+                &nbsp;&nbsp;pass<br><br>
+                class Customer:<br>
+                &nbsp;&nbsp;def __init__(self):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;self.active_order = Order()
               </div>
             </div>
 
@@ -280,8 +300,11 @@
               </div>
               <p class="text-10px text-slate-400">Bi-directional or general link between two class concepts.</p>
               <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
-                <span class="text-cyan-400">// Concept</span><br>
-                Student ──── Course
+                <span class="text-cyan-400"># Python</span><br>
+                class Student:<br>
+                &nbsp;&nbsp;pass<br><br>
+                class Course:<br>
+                &nbsp;&nbsp;pass
               </div>
             </div>
 
@@ -293,8 +316,12 @@
               </div>
               <p class="text-10px text-slate-400">Temporary usage. Class A uses Class B as a method parameter.</p>
               <div class="text-10px font-mono bg-slate-900 p-2 rounded text-slate-300">
-                <span class="text-fuchsia-400">// Java</span><br>
-                void export(Printer p) { p.print(); }
+                <span class="text-fuchsia-400"># Python</span><br>
+                class Printer:<br>
+                &nbsp;&nbsp;def print_receipt(self):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;pass<br><br>
+                def export(printer: Printer):<br>
+                &nbsp;&nbsp;printer.print_receipt()
               </div>
             </div>
 
